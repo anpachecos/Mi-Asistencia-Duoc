@@ -20,7 +20,9 @@ export class StorageService {
     const usuarios = [
       { nombre: 'Antonia', password: '12345' },
       { nombre: 'Pedro', password: '881188' },
-      { nombre: 'Juan', password: 'abcde' }
+      { nombre: 'Juan', password: 'abcde' },
+      { nombre: 'Javier', password: '1234' }
+
     ];
 
     // Guardar la lista de usuarios en el almacenamiento
