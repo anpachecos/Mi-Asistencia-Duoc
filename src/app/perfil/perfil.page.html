@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">Mis Asistencias</ion-text>
+      <ion-text color="warning">Duoc</ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header color="tertiary">
+      <ion-card-title>Perfil</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <div class="profile-section">
+    <div class="profile-image-container">
+      <img [src]="profileImageUrl" alt="Cargando..." class="profile-image" />
+    </div>
+    <p class="profile-label">Imagen de Perfil</p>
+  </div>
+
+</ion-content>

@@ -5,17 +5,19 @@
     </ion-buttons>
     <ion-title>
       <ion-text color="light">Mis Asistencias</ion-text>
-      <ion-text color="warning">Duoc </ion-text>
+      <ion-text color="warning">Duoc</ion-text>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-card>
-    <ion-card-header color ="tertiary">
+    <ion-card-header color="tertiary">
       <ion-card-title>Ajustes</ion-card-title>
     </ion-card-header>
   </ion-card>
+
+
   <ion-list>
     <!-- Sección de Notificaciones -->
     <ion-item>
@@ -25,9 +27,9 @@
 
     <!-- Sección de Tema oscuro -->
     <ion-item>
-      <ion-toggle [(ngModel)]="paletteToggle" (ionChange)="toggleChange($event)" justify="space-between"
-        >Tema oscuro</ion-toggle
-      >
+      <ion-toggle [(ngModel)]="paletteToggle" (ionChange)="toggleChange($event)" justify="space-between">
+        Tema oscuro
+      </ion-toggle>
     </ion-item>
 
     <!-- Sección de Idioma -->
@@ -62,7 +64,5 @@
       <ion-label>Acerca de</ion-label>
       <ion-icon name="information-circle" slot="end"></ion-icon>
     </ion-item>
-
-
   </ion-list>
 </ion-content>

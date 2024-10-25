@@ -50,6 +50,11 @@ const routes: Routes = [
     canActivate: [IngresadoGuard]
   },
   {
+    path: 'perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
+    canActivate: [IngresadoGuard]
+  },
+  {
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
@@ -62,6 +67,8 @@ const routes: Routes = [
     redirectTo: 'not-found',
     pathMatch: 'full'
   }
+  
+
 
 
 
