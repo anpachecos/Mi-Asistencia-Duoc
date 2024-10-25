@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-toolbar color="primary"> 
+  <ion-toolbar color="tertiary"> 
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>    <ion-title>
-      <ion-text color="light">Duoc</ion-text>
-      <ion-text color="warning">Assist</ion-text>
+      <ion-text color="light">Mis Asistencias</ion-text>
+      <ion-text color="warning">Duoc</ion-text>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -31,7 +31,7 @@
             <ion-label position = "floating"> Confirmar Contraseña </ion-label>
             <ion-input type="password" formControlName="confirmacionPassword"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="recuperar()">Recuperar</ion-button>
+          <ion-button expand="full" (click)="recuperar()" color="tertiary">Recuperar</ion-button>
         </form>
       </ion-card-content>
     </ion-card>
