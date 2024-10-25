@@ -6,7 +6,7 @@ import { IngresadoGuard } from './ingresado.guard';
 const routes: Routes = [
     {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'welcome',
     pathMatch: 'full'
   },
   {
