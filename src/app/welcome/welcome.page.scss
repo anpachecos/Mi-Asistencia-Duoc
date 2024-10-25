@@ -1,0 +1,22 @@
+.login-welcome {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .login-welcome h2 {
+    font-size: 1.5em;
+    color: #4A90E2; /* Color azul agradable */
+  }
+  
+  .login-welcome p {
+    font-size: 1em;
+    color: #555; /* Color gris para el texto secundario */
+    margin-top: 5px;
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente, si es necesario */
+  }
+  

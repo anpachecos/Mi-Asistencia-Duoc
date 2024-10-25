@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary"> 
+    <ion-buttons slot = "start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+    <ion-title>
+      <ion-text color="light">Duoc</ion-text>
+      <ion-text color="warning">Assist</ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="login-welcome">
+    <h2>Error 404</h2>
+    <p>¡Ups! No se encontró lo que buscabas</p>
+  </div>
+  
+  <div class="image-container">
+    <img src="../assets/images/error-404.png" alt="error-404" class="login-image">
+  </div>    
+
+</ion-content>
+
+  <ion-button expand="full" [routerLink]="['/inicio']">
+    Ir al Inicio
+  </ion-button>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title size="small" text-center>
+      © 2024 HasbiTech. Todos los derechos reservados.
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

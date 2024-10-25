@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">Duoc</ion-text>
+      <ion-text color="warning">Assist</ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAsistencias()"></ion-searchbar>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Mis Asistencias</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card *ngFor="let asistencia of filteredAsistencias" class="asistencia-card small-card">
+    <ion-card-header>
+      <ion-card-title>{{ asistencia.titulo }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Fecha: {{ asistencia.fecha }}</p>
+      <p>Ubicación: {{ asistencia.ubicacion }}</p>
+      <p>Descripción: {{ asistencia.descripcion }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

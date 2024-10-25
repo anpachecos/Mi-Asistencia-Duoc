@@ -1,0 +1,25 @@
+.login-welcome {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .image-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .login-image {
+    width: 50vw;  
+    height: auto; 
+    max-width: 300px;
+    margin-bottom: 100px;
+  }
+  
+  @media (max-width: 600px) {
+    .login-image {
+      width: 70vw;  
+      margin-bottom: 50px;
+    }
+  }
+  

@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">Duoc</ion-text>
+      <ion-text color="warning">Assist</ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title size="large">Ajustes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <!-- Sección de Notificaciones -->
+    <ion-item>
+      <ion-label>Notificaciones</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item>
+
+    <!-- Sección de Tema oscuro -->
+    <ion-item>
+      <ion-toggle [(ngModel)]="paletteToggle" (ionChange)="toggleChange($event)" justify="space-between"
+        >Tema oscuro</ion-toggle
+      >
+    </ion-item>
+
+    <!-- Sección de Idioma -->
+    <ion-item>
+      <ion-label>Idioma</ion-label>
+      <ion-select placeholder="Seleccionar">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="en">Inglés</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Sección de Privacidad -->
+    <ion-item>
+      <ion-label>Privacidad</ion-label>
+      <ion-icon name="lock-closed" slot="end"></ion-icon>
+    </ion-item>
+
+    <!-- Sección de Seguridad -->
+    <ion-item>
+      <ion-label>Seguridad</ion-label>
+      <ion-icon name="shield-checkmark" slot="end"></ion-icon>
+    </ion-item>
+
+    <!-- Sección de Soporte -->
+    <ion-item>
+      <ion-label>Soporte</ion-label>
+      <ion-icon name="help-circle" slot="end"></ion-icon>
+    </ion-item>
+
+    <!-- Sección de Acerca de -->
+    <ion-item>
+      <ion-label>Acerca de</ion-label>
+      <ion-icon name="information-circle" slot="end"></ion-icon>
+    </ion-item>
+
+
+  </ion-list>
+</ion-content>

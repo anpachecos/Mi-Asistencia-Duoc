@@ -1,0 +1,104 @@
+<ion-menu contentId="main-content" side="start">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>
+        <ion-text color="light">Duoc</ion-text>
+        <ion-text color="warning">Assist</ion-text>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/mis-asistencias">
+          <ion-icon slot="start" name="people-outline"></ion-icon>
+          <ion-label>Mis Asistencias</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/ajustes">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          <ion-label>Ajustes</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item (click)="cerrarSesion()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>Cerrar Sesión</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="main-content"></ion-router-outlet>
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">Duoc</ion-text>
+      <ion-text color="warning">Assist</ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="custom-title">Bienvenido {{ nombreUsuario }}</ion-card-title>
+      <ion-card-subtitle>{{ fechaHoy }}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="item-bordered">
+    <ion-card-header>
+      <ion-card-title class="custom-title">Tus clases de hoy</ion-card-title>
+    </ion-card-header>
+    <ion-card-content >
+      <ion-list>
+        <ion-item *ngFor="let clase of clasesHoy" >
+          <ion-label>
+            <h2>{{ clase.titulo }}</h2>
+            <p><strong>Fecha:</strong> {{ clase.fecha }}</p>
+            <p><strong>Ubicación:</strong> {{ clase.ubicacion }}</p>
+            <p><strong>Descripción:</strong> {{ clase.descripcion }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="['/mis-asistencias']">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/ajustes']">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div class="qr-button-container">
+    <ion-button class="qr-button" (click)="takePhoto()">
+      <ion-icon slot="icon-only" name="qr-code-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-toolbar>
+    <ion-title size="small" text-center>
+      © 2024 HasbiTech. Todos los derechos reservados.
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
