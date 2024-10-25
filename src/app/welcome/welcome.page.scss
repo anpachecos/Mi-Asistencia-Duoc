@@ -9,13 +9,10 @@
   color: var(--ion-color-light, #ffffff); /* Texto en blanco o el color claro predeterminado */
 }
 
-
-
-
 .image-container {
   position: absolute;
   bottom: 0; /* Coloca la imagen justo encima del footer */
-  left: 20%;
+  left: 45%;
   transform: translateX(-50%);
 }
 
