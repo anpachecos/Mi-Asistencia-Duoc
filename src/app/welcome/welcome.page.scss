@@ -1,22 +1,26 @@
-.login-welcome {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .login-welcome h2 {
-    font-size: 1.5em;
-    color: #4A90E2; /* Color azul agradable */
-  }
-  
-  .login-welcome p {
-    font-size: 1em;
-    color: #555; /* Color gris para el texto secundario */
-    margin-top: 5px;
-  }
+.content-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding-top: 20px;
+  background-color: var(--ion-color-tertiary, #d54ae2); /* Fondo de color terciario */
+  color: var(--ion-color-light, #ffffff); /* Texto en blanco o el color claro predeterminado */
+}
 
-  .image-container {
-    display: flex;
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente, si es necesario */
-  }
-  
+
+
+
+.image-container {
+  position: absolute;
+  bottom: 0; /* Coloca la imagen justo encima del footer */
+  left: 20%;
+  transform: translateX(-50%);
+}
+
+.login-image {
+  width: 150vw; /* La imagen ocupará el 80% del ancho de la pantalla */
+  max-width: 400px; /* Tamaño máximo para pantallas grandes */
+  height: auto; /* Mantiene la proporción */
+}
