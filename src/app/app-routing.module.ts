@@ -53,6 +53,10 @@ const routes: Routes = [
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
 
   //aquiiiii 404
   // Si hago más cosas, osea rutas, tienen que ir en orden porque va validando de arriba hacia abajo
@@ -62,6 +66,8 @@ const routes: Routes = [
     redirectTo: 'not-found',
     pathMatch: 'full'
   }
+  
+
 
 
 
