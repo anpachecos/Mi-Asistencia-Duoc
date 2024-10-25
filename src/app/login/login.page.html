@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-toolbar color="primary"> 
+  <ion-toolbar color="tertiary"> 
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>    <ion-title>
-      <ion-text color="light">Duoc</ion-text>
-      <ion-text color="warning">Assist</ion-text>
+      <ion-text color="light">Mis Asistencias</ion-text>
+      <ion-text color="warning">Duoc</ion-text>
     </ion-title>
   </ion-toolbar>
 </ion-header> 
@@ -19,7 +19,7 @@
     <ion-card-content>
       <form [formGroup] = "formularioLogin">
         <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
+          <ion-label position="floating">Usuario</ion-label>
           <ion-input formControlName="nombre"></ion-input>
         </ion-item>
     
@@ -27,7 +27,7 @@
           <ion-label position = "floating"> Contraseña </ion-label>
           <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
-        <ion-button (click)="ingresar()">  <!--Aquí debería ir (click="ingresar()")-->
+        <ion-button (click)="ingresar()" color="tertiary">  <!--Aquí debería ir (click="ingresar()")-->
           Ingresar
         </ion-button>
       </form>
@@ -36,7 +36,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar color = "primary">
+  <ion-toolbar color = "tertiary">
     <ion-buttons slot ="end">
       <ion-button [routerLink] = "['/registro']">Recuperar Contraseña</ion-button>
     </ion-buttons>
@@ -44,7 +44,7 @@
 
   <ion-toolbar>
     <ion-title size="small" text-center>
-      © 2024 HasbiTech. Todos los derechos reservados.
+      © 2024 Antonia Pacheco. Todos los derechos reservados.
     </ion-title>
   </ion-toolbar>
 </ion-footer>

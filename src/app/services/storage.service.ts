@@ -16,18 +16,15 @@ export class StorageService {
     const storage = await this.storage.create();
     this._storage = storage;
 
-    // Crear una lista de usuarios de prueba si no existen
-    const usuariosExistentes = await this.get('usuarios');
-    if (!usuariosExistentes) {
-      const usuarios = [
-        { nombre: 'antonia', password: '12345' },
-        { nombre: 'luis', password: 'password123' },
-        { nombre: 'juan', password: 'abcde' }
-      ];
+    // Sobrescribe o crea la lista de usuarios en cada inicio
+    const usuarios = [
+      { nombre: 'Antonia', password: '12345' },
+      { nombre: 'Pedro', password: '881188' },
+      { nombre: 'Juan', password: 'abcde' }
+    ];
 
-      // Guardar la lista de usuarios en el almacenamiento
-      await this.set('usuarios', usuarios);
-    }
+    // Guardar la lista de usuarios en el almacenamiento
+    await this.storage.set('usuarios', usuarios);
   }
 
   // Guardar un valor
