@@ -11,6 +11,8 @@
 - **Recuperación de Contraseña**: Funcionalidad para recuperar la contraseña de usuario.
 - **Manejo de Errores**: Página 404 personalizada para rutas no encontradas.
 - **Guards de Seguridad**: Restricción de acceso a secciones específicas para usuarios no autorizados.
+- **Api de Pokemon**: Fetch a la Api de pokemon para crear imagenes de perfil personalizadas! https://pokeapi.co.
+
 
 ## Próximas Funcionalidades 🔜
 
