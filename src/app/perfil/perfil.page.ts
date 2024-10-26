@@ -8,13 +8,14 @@ import { StorageService } from '../services/storage.service';
 })
 export class PerfilPage implements OnInit {
   profileImageUrl: string = '';
-  nombreUsuario: string = ''; // Variable para almacenar el nombre del usuario
+  nombreUsuario: string = ''; // Aquí guardamos el usuario activo para dsp preguntar los datos del mismo. 
+  userData: any = null; // Aquí almacenaremos los datos completos del usuario logueado
 
   constructor(private storageService: StorageService) {}
 
   async ngOnInit() {
     this.getRandomPokemonImage();
-    await this.cargarNombreUsuario(); // Cargar el nombre del usuario logueado
+    await this.cargarDatosUsuario(); // Cargar el nombre del usuario logueado
   }
 
   // Método para obtener una imagen de Pokémon aleatoria
@@ -30,8 +31,13 @@ export class PerfilPage implements OnInit {
   }
 
   // Método para cargar el nombre del usuario logueado
-  async cargarNombreUsuario() {
+  async cargarDatosUsuario() {
     await this.storageService.init(); // Asegura que el storage esté inicializado
-    this.nombreUsuario = await this.storageService.get('usuarioActivo') || ''; // Obtener el nombre del usuario
+    this.nombreUsuario = await this.storageService.get('usuarioActivo') || ''; // Obtener el nombre del usuario logueado
+  
+    if (this.nombreUsuario) {
+      this.userData = await this.storageService.getUserByName(this.nombreUsuario); // Obtener los datos completos del usuario
+    }
   }
+  
 }

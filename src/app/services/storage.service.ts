@@ -9,39 +9,55 @@ export class StorageService {
 
   constructor(private storage: Storage) {}
 
-  // Inicializa el almacenamiento
   async init() {
     const storage = await this.storage.create();
     this._storage = storage;
 
-    // Sobrescribe o crea la lista de usuarios en cada inicio
-    const usuarios = [
-      { nombre: 'Antonia', password: '12345' },
-      { nombre: 'Pedro', password: '881188' },
-      { nombre: 'Juan', password: 'abcde' },
-      { nombre: 'Javier', password: '1234' },
-      { nombre: 'Constanza', password: '1234' }
-    ];
+    // Solo inicializa los usuarios si aún no existen en el almacenamiento
+    const usuariosExistentes = await this._storage.get('usuarios');
+    if (!usuariosExistentes) {
+      const usuarios = [
+        { nombre: 'Antonia', password: '12345', apellido: 'Pacheco', carrera: 'Ingeniería en Informática' },
+        { nombre: 'Paolo', password: '881188', apellido: 'Rossi', carrera: 'Administración de Empresas' },
+        { nombre: 'Juan', password: 'abcde', apellido: 'García', carrera: 'Contabilidad' },
+        { nombre: 'Javier', password: '1234', apellido: 'Martínez', carrera: 'Ingeniería Civil' },
+        { nombre: 'Constanza', password: '1234', apellido: 'López', carrera: 'Derecho' }
+      ];
+      await this._storage.set('usuarios', usuarios);
+    }
 
-    // Guardar la lista de usuarios en el almacenamiento
-    await this._storage.set('usuarios', usuarios);
+    // Imprimir la lista de usuarios actual en la consola
+    const usuarios = await this._storage.get('usuarios');
+    console.log('Usuarios actuales:', usuarios);
   }
 
-  // Guardar un valor
+  public async getUserByName(nombre: string) {
+    await this.init();
+    const usuarios = await this._storage?.get('usuarios');
+    if (usuarios) {
+      const usuarioEncontrado = usuarios.find((usuario: any) => usuario.nombre === nombre);
+      if (usuarioEncontrado) {
+        return usuarioEncontrado;
+      } else {
+        throw new Error('Usuario no encontrado');
+      }
+    } else {  
+      throw new Error('No se pudo acceder a la lista de usuarios');
+    }
+  }
+
   public async set(key: string, value: any) {
-    await this.init(); // Aseguramos que Storage esté listo
+    await this.init(); 
     return this._storage?.set(key, value);
   }
 
-  // Obtener un valor
   public async get(key: string) {
-    await this.init(); // Aseguramos que Storage esté listo
+    await this.init(); 
     return this._storage?.get(key);
   }
 
-  // Eliminar un valor
   public async remove(key: string) {
-    await this.init(); // Aseguramos que Storage esté listo
+    await this.init(); 
     return this._storage?.remove(key);
   }
 }

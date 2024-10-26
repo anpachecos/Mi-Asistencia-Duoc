@@ -31,4 +31,23 @@
     </ion-item>
   </ion-list>
   
+  <ion-list *ngIf="userData">
+    <ion-item>
+      <ion-label>Nombre:</ion-label>
+      <ion-label>{{ userData.nombre }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Apellido:</ion-label>
+      <ion-label>{{ userData.apellido }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Carrera:</ion-label>
+      <ion-label>{{ userData.carrera }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Password:</ion-label>
+      <ion-label>{{ userData.password }}</ion-label>
+    </ion-item>
+  </ion-list>
+  
 </ion-content>
