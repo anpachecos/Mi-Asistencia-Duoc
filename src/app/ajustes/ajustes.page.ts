@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from '../services/storage.service';  
 
 @Component({
   selector: 'app-ajustes',
@@ -8,20 +9,21 @@ import { Component, OnInit } from '@angular/core';
 export class AjustesPage implements OnInit {
   paletteToggle = false;
 
-  constructor() {}
+  constructor(private storageService: StorageService) {}
 
-  ngOnInit() {
-    // Leer el estado guardado del modo oscuro desde el localStorage
-    const storedThemePreference = localStorage.getItem('darkMode');
-    if (storedThemePreference) {
-      this.paletteToggle = JSON.parse(storedThemePreference);
+  async ngOnInit() {
+    // Aquí anteriormente tenía el código para cargar el tema guardado en localStorage
+    // Pero como hay que manejar persistencia, lo haré con ionicStorage
+    const storedThemePreference = await this.storageService.get('darkMode');
+    if (storedThemePreference !== null) {
+      this.paletteToggle = storedThemePreference;
       this.toggleDarkPalette(this.paletteToggle);
     }
   }
 
-  toggleChange(ev: any) {
+  async toggleChange(ev: any) {
     this.paletteToggle = ev.detail.checked;
-    localStorage.setItem('darkMode', JSON.stringify(this.paletteToggle));
+    await this.storageService.set('darkMode', this.paletteToggle);
     this.toggleDarkPalette(this.paletteToggle);
   }
 

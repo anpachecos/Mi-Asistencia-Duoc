@@ -9,7 +9,6 @@ export class StorageService {
 
   constructor(private storage: Storage) {}
 
-  // Inicializa el almacenamiento
   async init() {
     const storage = await this.storage.create();
     this._storage = storage;
@@ -17,7 +16,7 @@ export class StorageService {
     // Sobrescribe o crea la lista de usuarios en cada inicio
     const usuarios = [
       { nombre: 'Antonia', password: '12345' },
-      { nombre: 'Pedro', password: '881188' },
+      { nombre: 'Paolo', password: '881188' },
       { nombre: 'Juan', password: 'abcde' },
       { nombre: 'Javier', password: '1234' },
       { nombre: 'Constanza', password: '1234' }
