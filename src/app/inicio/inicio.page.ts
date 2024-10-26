@@ -24,7 +24,8 @@ export class InicioPage implements OnInit {
 
   // Método que se ejecuta al cargar la página
   async ngOnInit() {
-    // Recuperar el nombre del usuario desde Ionic Storage de forma asíncrona
+    // Asegurar que el almacenamiento esté inicializado y luego recuperar el nombre de usuario
+    await this.storageService.init();
     this.nombreUsuario = await this.storageService.get('usuarioActivo') || ''; // Si no hay nombre, deja en blanco
     
     // Obtener la fecha actual
@@ -63,6 +64,4 @@ export class InicioPage implements OnInit {
     await this.storageService.remove('usuarioActivo'); // Eliminar el nombre del usuario activo
     this.navCtrl.navigateRoot('login'); // Redirigir a la página de login
   }
-  
-
 }
