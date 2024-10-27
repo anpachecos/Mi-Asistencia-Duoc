@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { PhotosService } from '../photos.service';
 import { StorageService } from '../services/storage.service'; // Importa el servicio de almacenamiento
+import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
 
 @Component({
   selector: 'app-inicio',
@@ -13,6 +14,7 @@ export class InicioPage implements OnInit {
   nombreUsuario: string = ''; // Variable para almacenar el nombre del usuario
   fechaHoy!: string;
   photos: string[] = [];
+  result: string ="";
 
   constructor(
     public navCtrl: NavController,
@@ -64,4 +66,13 @@ export class InicioPage implements OnInit {
     await this.storageService.remove('usuarioActivo'); // Eliminar el nombre del usuario activo
     this.navCtrl.navigateRoot('login'); // Redirigir a la página de login
   }
+
+  async scan(): Promise<void> {
+    const result = await CapacitorBarcodeScanner.scanBarcode({
+      hint: CapacitorBarcodeScannerTypeHint.ALL
+    });
+    this.result = result.ScanResult;
+  }
+
+  
 }
