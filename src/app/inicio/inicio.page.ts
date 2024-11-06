@@ -48,13 +48,13 @@ export class InicioPage implements OnInit {
   clasesHoy = [
     {
       titulo: 'PROGRAMACIÓN DE APLICACIONES MÓVILES',
-      fecha: '2024-09-05',
+      fecha: '2024-10-29',
       ubicacion: 'SALA SJ-L7',
       descripcion: 'Sección PGY4121'
     },
     {
       titulo: 'ESTADÍSTICA DESCRIPTIVA',
-      fecha: '2024-09-05',
+      fecha: '2024-10-29',
       ubicacion: 'SALA SJ-L4',
       descripcion: 'Sección MAT4140'
     }

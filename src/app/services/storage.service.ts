@@ -12,6 +12,7 @@ export class StorageService {
   async init() {
     const storage = await this.storage.create();
     this._storage = storage;
+    //await this._storage.remove('usuarios');
 
     // Solo inicializa los usuarios si aún no existen en el almacenamiento
     const usuariosExistentes = await this._storage.get('usuarios');

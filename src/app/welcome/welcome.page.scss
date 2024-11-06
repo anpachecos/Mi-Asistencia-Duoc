@@ -1,14 +1,3 @@
-.content-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  padding-top: 20px;
-  background-color: var(--ion-color-tertiary, #d54ae2); /* Fondo de color terciario */
-  color: var(--ion-color-light, #ffffff); /* Texto en blanco o el color claro predeterminado */
-}
-
 .image-container {
   position: absolute;
   bottom: 0; /* Coloca la imagen justo encima del footer */
