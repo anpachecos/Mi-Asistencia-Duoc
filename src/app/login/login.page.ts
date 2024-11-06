@@ -9,7 +9,19 @@ import { StorageService } from '../services/storage.service'; // Importamos nues
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
 
+  togglePasswordVisibility() {
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';
+      this.passwordIcon = 'eye';
+    } else {
+      this.passwordType = 'password';
+      this.passwordIcon = 'eye-off';
+    }
+  }
+  
   formularioLogin: FormGroup;
 
   constructor(

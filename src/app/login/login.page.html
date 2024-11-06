@@ -26,9 +26,18 @@
   
       <ion-item class="ion-margin-bottom">
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="10">
+              <ion-input [type]="passwordType" formControlName="password"></ion-input>
+            </ion-col>
+            <ion-col size="2" class="ion-text-right">
+              <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" size="small"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
-
+      
       <ion-button expand="block" (click)="ingresar()" color="tertiary" size="small">
         Ingresar
       </ion-button>

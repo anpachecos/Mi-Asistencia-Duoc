@@ -18,21 +18,22 @@
 
     <ion-card-content class="ion-padding">
       <form [formGroup]="formularioRecuperar">
+        
         <ion-item class="ion-margin-bottom" lines="none">
-          <ion-label position="floating">Nombre de Usuario</ion-label>
-          <ion-input formControlName="nombre" size="small"></ion-input>
+          <ion-label position="floating" class="small-text">Nombre de Usuario</ion-label>
+          <ion-input formControlName="nombre" class="small-text"></ion-input>
         </ion-item>
-    
+        
         <ion-item class="ion-margin-bottom" lines="none">
-          <ion-label position="floating">Nueva Contraseña</ion-label>
-          <ion-input type="password" formControlName="password" size="small"></ion-input>
+          <ion-label position="floating" class="small-text">Nueva Contraseña</ion-label>
+          <ion-input type="password" formControlName="password" class="small-text"></ion-input>
         </ion-item>
-
+        
         <ion-item class="ion-margin-bottom" lines="none">
-          <ion-label position="floating">Confirmar Contraseña</ion-label>
-          <ion-input type="password" formControlName="confirmacionPassword" size="small"></ion-input>
+          <ion-label position="floating" class="small-text">Confirmar Contraseña</ion-label>
+          <ion-input type="password" formControlName="confirmacionPassword" class="small-text"></ion-input>
         </ion-item>
-
+        
         <ion-button expand="block" (click)="recuperar()" color="tertiary" size="small">
           Recuperar
         </ion-button>
