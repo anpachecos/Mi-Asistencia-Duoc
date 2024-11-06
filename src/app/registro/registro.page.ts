@@ -9,6 +9,20 @@ import { StorageService } from '../services/storage.service'; // Importar el ser
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
+  passwordType: string = 'password';
+  confirmPasswordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+  confirmPasswordIcon: string = 'eye-off';
+
+  togglePasswordVisibility() {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordType = this.confirmPasswordType === 'password' ? 'text' : 'password';
+    this.confirmPasswordIcon = this.confirmPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
 
   formularioRecuperar: FormGroup;
 

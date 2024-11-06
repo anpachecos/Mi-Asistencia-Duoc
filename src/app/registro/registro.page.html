@@ -26,13 +26,32 @@
         
         <ion-item class="ion-margin-bottom" lines="none">
           <ion-label position="floating" class="small-text">Nueva Contraseña</ion-label>
-          <ion-input type="password" formControlName="password" class="small-text"></ion-input>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="10">
+                <ion-input [type]="passwordType" formControlName="password" class="small-text"></ion-input>
+              </ion-col>
+              <ion-col size="2" class="ion-text-right">
+                <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" size="small"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-item>
         
         <ion-item class="ion-margin-bottom" lines="none">
           <ion-label position="floating" class="small-text">Confirmar Contraseña</ion-label>
-          <ion-input type="password" formControlName="confirmacionPassword" class="small-text"></ion-input>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="10">
+                <ion-input [type]="confirmPasswordType" formControlName="confirmacionPassword" class="small-text"></ion-input>
+              </ion-col>
+              <ion-col size="2" class="ion-text-right">
+                <ion-icon [name]="confirmPasswordIcon" (click)="toggleConfirmPasswordVisibility()" size="small"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-item>
+        
         
         <ion-button expand="block" (click)="recuperar()" color="tertiary" size="small">
           Recuperar
@@ -41,7 +60,6 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-
 
   <ion-footer>
     <ion-toolbar color="tertiary">
