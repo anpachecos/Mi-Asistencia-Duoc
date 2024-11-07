@@ -1,14 +1,3 @@
-.content-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  padding-top: 20px;
-  background-color: var(--ion-color-tertiary, #d54ae2); /* Fondo de color terciario */
-  color: var(--ion-color-light, #ffffff); /* Texto en blanco o el color claro predeterminado */
-}
-
 .image-container {
   position: absolute;
   bottom: 0; /* Coloca la imagen justo encima del footer */
@@ -18,6 +7,6 @@
 
 .login-image {
   width: 150vw; /* La imagen ocupará el 80% del ancho de la pantalla */
-  max-width: 400px; /* Tamaño máximo para pantallas grandes */
+  max-width: 300px; /* Tamaño máximo para pantallas grandes */
   height: auto; /* Mantiene la proporción */
 }

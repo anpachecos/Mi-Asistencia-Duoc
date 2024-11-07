@@ -11,39 +11,47 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Iniciar Sesión</ion-card-title>
-    </ion-card-header>
+ <ion-card>
+  <img src="../assets/images/2.jpg" alt="App Logo" style="width: 50%; display: block; margin: 0 auto;" />
+  <ion-card-header>
+    <ion-card-subtitle>Inicia sesión con tu cuenta Duoc </ion-card-subtitle>
+  </ion-card-header>
 
-    <ion-card-content>
-      <form [formGroup] = "formularioLogin">
-        <ion-item>
-          <ion-label position="floating">Usuario</ion-label>
-          <ion-input formControlName="nombre"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position = "floating"> Contraseña </ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
-        </ion-item>
-        <ion-button (click)="ingresar()" color="tertiary">  <!--Aquí debería ir (click="ingresar()")-->
-          Ingresar
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
+  <ion-card-content class="ion-padding-horizontal ion-padding-vertical">
+    <form [formGroup]="formularioLogin">
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input formControlName="nombre"></ion-input>
+      </ion-item>
+  
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="10">
+              <ion-input [type]="passwordType" formControlName="password"></ion-input>
+            </ion-col>
+            <ion-col size="2" class="ion-text-right">
+              <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" size="small"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      
+      <ion-button expand="block" (click)="ingresar()" color="tertiary" size="small">
+        Ingresar
+      </ion-button>
+    </form>
+
+    <ion-button expand="block" color="tertiary" [routerLink]="['/registro']" size="small">
+      Recuperar Contraseña
+    </ion-button>
+  </ion-card-content>
+</ion-card>
 
 <ion-footer>
-  <ion-toolbar color = "tertiary">
-    <ion-buttons slot ="end">
-      <ion-button [routerLink] = "['/registro']">Recuperar Contraseña</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <ion-toolbar>
-    <ion-title size="small" text-center>
+  <ion-toolbar color="tertiary">
+    <ion-title  size="small" text-center>
       © 2024 Antonia Pacheco. Todos los derechos reservados.
     </ion-title>
   </ion-toolbar>
