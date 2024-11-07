@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController} from '@ionic/angular';
 import { PhotosService } from '../photos.service';
 import { StorageService } from '../services/storage.service'; // Importa el servicio de almacenamiento
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
@@ -13,15 +13,14 @@ export class InicioPage implements OnInit {
 
   nombreUsuario: string = ''; // Variable para almacenar el nombre del usuario
   fechaHoy!: string;
-  photos: string[] = [];
   result: string ="";
 
   constructor(
     public navCtrl: NavController,
     private photoService: PhotosService,
-    private storageService: StorageService // Inyectar el servicio de almacenamiento
+    private storageService: StorageService, // Inyectar el servicio de almacenamiento
+    private alertController: AlertController
   ) {
-    this.photos = this.photoService.photos;
   }
 
   // Método que se ejecuta al cargar la página
@@ -39,12 +38,9 @@ export class InicioPage implements OnInit {
     });
   }
 
-  // Método para tomar una foto
-  async takePhoto(){
-    await this.photoService.addNewPhoto();
-  }
 
-  // Clases del día de hoy
+
+  // Clases de hoy
   clasesHoy = [
     {
       titulo: 'PROGRAMACIÓN DE APLICACIONES MÓVILES',
@@ -64,15 +60,48 @@ export class InicioPage implements OnInit {
   async cerrarSesion() {
     await this.storageService.remove('ingresado'); // Eliminar el estado de autenticado
     await this.storageService.remove('usuarioActivo'); // Eliminar el nombre del usuario activo
-    this.navCtrl.navigateRoot('login'); // Redirigir a la página de login
+    this.navCtrl.navigateRoot('login'); 
   }
 
   async scan(): Promise<void> {
-    const result = await CapacitorBarcodeScanner.scanBarcode({
-      hint: CapacitorBarcodeScannerTypeHint.ALL
-    });
-    this.result = result.ScanResult;
+    try {
+      const result = await CapacitorBarcodeScanner.scanBarcode({
+        hint: CapacitorBarcodeScannerTypeHint.ALL
+      });
+  
+      this.result = result.ScanResult;
+      const now = new Date();
+      const formattedDateTime = now.toLocaleString();
+  
+      await this.showAlert(this.result, formattedDateTime);
+    } catch (error) {
+      console.error('Error al escanear:', error);
+    }
   }
 
+  async showAlert(message: string, dateTime: string) {
+    let formattedMessage;
+  
+    try {
+      // Intentar formatear como JSON
+      const jsonContent = JSON.parse(message);
+      formattedMessage = `
+        Asignatura: ${jsonContent.asignatura}
+        Sección:  ${jsonContent.sección}
+        Sala:  ${jsonContent.sala}
+      `;
+    } catch {
+      // Si no es JSON, mostrar como texto normal
+      formattedMessage = `Contenido: ${message}`;
+    }
+  
+    const alert = await this.alertController.create({
+      header: 'Resultado del QR',
+      message: `${formattedMessage}Escaneado el: ${dateTime}`,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+  
   
 }
