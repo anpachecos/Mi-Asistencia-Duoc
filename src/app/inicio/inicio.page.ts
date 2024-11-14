@@ -44,17 +44,12 @@ export class InicioPage implements OnInit {
   }
 
   async presentLoading() {
-    // Crear el spinner
     const loading = await this.loadingController.create({
-      message: 'Cargando...',
-      spinner: 'circles', // Puedes cambiar el tipo de spinner (bubbles, circles, etc.)
-      duration: 2000 // Tiempo en milisegundos (ajusta según tus necesidades)
+      message: 'Actualizando...',
+      spinner: 'circular', 
+      duration: 2000 
     });
-
-    // Mostrar el spinner
     await loading.present();
-
-    // Opción para ocultar el spinner manualmente si necesitas realizar tareas asíncronas
     const { role, data } = await loading.onDidDismiss();
     console.log('Cargando completado');
   }
