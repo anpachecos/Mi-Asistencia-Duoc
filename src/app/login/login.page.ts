@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
 import { StorageService } from '../services/storage.service'; // Importamos nuestro servicio
+import { LoadingController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-login',
@@ -28,7 +30,8 @@ export class LoginPage implements OnInit {
     public fb: FormBuilder, 
     public alertController: AlertController,
     public navCtrl: NavController,
-    private storageService: StorageService // Inyectamos el servicio de almacenamiento
+    private storageService: StorageService, // Inyectamos el servicio de almacenamiento
+    private loadingCtrl: LoadingController
   ) { 
     this.formularioLogin = this.fb.group({
       'nombre': new FormControl("", Validators.required),
@@ -49,6 +52,15 @@ export class LoginPage implements OnInit {
       await this.storageService.set('ingresado', true); // Marcar como autenticado
       await this.storageService.set('usuarioActivo', usuarioEncontrado.nombre); // Guardar el nombre del usuario activo
       this.navCtrl.navigateRoot('inicio'); // Redirigir a la página de inicio
+
+      const loading = await this.loadingCtrl.create({
+        message: 'Ingresando...',
+        duration: 500,
+      });
+  
+      loading.present();
+
+
     } else {
       const alert = await this.alertController.create({
         header: 'Error',

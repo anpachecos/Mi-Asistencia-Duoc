@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController} from '@ionic/angular';
-import { PhotosService } from '../photos.service';
 import { StorageService } from '../services/storage.service'; // Importa el servicio de almacenamiento
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
+import { GoodbyeAnimationComponent } from '../components/goodbye-animation/goodbye-animation.component';
+import { ModalController } from '@ionic/angular';
+
+
 
 @Component({
   selector: 'app-inicio',
@@ -17,9 +20,9 @@ export class InicioPage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    private photoService: PhotosService,
     private storageService: StorageService, // Inyectar el servicio de almacenamiento
-    private alertController: AlertController
+    private alertController: AlertController,
+    private modalController: ModalController
   ) {
   }
 
@@ -60,7 +63,20 @@ export class InicioPage implements OnInit {
   async cerrarSesion() {
     await this.storageService.remove('ingresado'); // Eliminar el estado de autenticado
     await this.storageService.remove('usuarioActivo'); // Eliminar el nombre del usuario activo
-    this.navCtrl.navigateRoot('login'); 
+    this.navCtrl.navigateRoot('login');
+    
+    const modal = await this.modalController.create({
+      component: GoodbyeAnimationComponent,
+      cssClass: 'small-modal'
+    });
+  
+    await modal.present();
+  
+    // Cierra el modal después de 2 segundos
+    setTimeout(() => {
+      modal.dismiss();
+      // Navega a la página de inicio de sesión o donde desees redirigir
+    }, 2000);
   }
 
   async scan(): Promise<void> {
@@ -96,7 +112,7 @@ export class InicioPage implements OnInit {
     }
   
     const alert = await this.alertController.create({
-      header: 'Resultado del QR',
+      header: 'Asistencia Registrada',
       message: `${formattedMessage}Escaneado el: ${dateTime}`,
       buttons: ['OK']
     });
