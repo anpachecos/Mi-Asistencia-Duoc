@@ -55,7 +55,8 @@ export class LoginPage implements OnInit {
 
       const loading = await this.loadingCtrl.create({
         message: 'Ingresando...',
-        duration: 500,
+        spinner: 'circular', 
+        duration: 500
       });
   
       loading.present();

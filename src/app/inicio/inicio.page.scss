@@ -1,3 +1,5 @@
+
+
   .qr-button-container {
       position: relative;
       display: flex;
@@ -43,5 +45,18 @@
   .custom-border {
     border: 1px solid var(--ion-color-tertiary); 
     border-radius: 8px; 
+  }
+
+  ion-card {
+    position: relative; /* Permite que el ícono se posicione absolutamente dentro del card */
+  
+    .refresh-icon {
+      position: absolute;
+      top: 10px; /* Ajusta según la distancia deseada desde el borde superior */
+      right: 10px; /* Ajusta según la distancia deseada desde el borde derecho */
+      font-size: 24px; /* Tamaño del ícono */
+      cursor: pointer;
+      z-index: 10; /* Asegura que el ícono esté sobre el contenido del card */
+    }
   }
   

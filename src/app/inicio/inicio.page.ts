@@ -3,7 +3,7 @@ import { NavController, AlertController} from '@ionic/angular';
 import { StorageService } from '../services/storage.service'; // Importa el servicio de almacenamiento
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
 import { GoodbyeAnimationComponent } from '../components/goodbye-animation/goodbye-animation.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 
 
 
@@ -13,6 +13,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
+  
 
   nombreUsuario: string = ''; // Variable para almacenar el nombre del usuario
   fechaHoy!: string;
@@ -22,7 +23,8 @@ export class InicioPage implements OnInit {
     public navCtrl: NavController,
     private storageService: StorageService, // Inyectar el servicio de almacenamiento
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private loadingController: LoadingController
   ) {
   }
 
@@ -41,7 +43,17 @@ export class InicioPage implements OnInit {
     });
   }
 
-
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Actualizando...',
+      spinner: 'circular', 
+      duration: 2000 
+    });
+    await loading.present();
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Cargando completado');
+  }
+  
 
   // Clases de hoy
   clasesHoy = [

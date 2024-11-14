@@ -56,13 +56,22 @@
 </ion-header>
 
 <ion-content id="main-content" [fullscreen]="true">
+
   <ion-card>
+    <!-- Ícono de refresco posicionado en la esquina superior izquierda -->
+    <ion-icon 
+      name="refresh-circle-outline" 
+      (click)="presentLoading()" 
+      class="refresh-icon"
+      color="tertiary">
+    </ion-icon>
+  
     <ion-card-header>
       <ion-card-title class="custom-title">Bienvenido {{ nombreUsuario }}</ion-card-title>
       <ion-card-subtitle>{{ fechaHoy }}</ion-card-subtitle>
     </ion-card-header>
   </ion-card>
-
+  
   <ion-card class="item-bordered custom-border">
     <ion-card-header color="tertiary">
       <ion-card-title class="custom-title">Tus clases de hoy</ion-card-title>
