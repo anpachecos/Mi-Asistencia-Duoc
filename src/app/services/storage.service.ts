@@ -12,25 +12,27 @@ export class StorageService {
   async init() {
     const storage = await this.storage.create();
     this._storage = storage;
-    //await this._storage.remove('usuarios');
-
-    // Solo inicializa los usuarios si aún no existen en el almacenamiento
+    
+    // Eliminar el array existente de usuarios
+    await this._storage.remove('usuarios');
+    
+    // Volver a inicializar con los usuarios originales
     const usuariosExistentes = await this._storage.get('usuarios');
     if (!usuariosExistentes) {
       const usuarios = [
         { nombre: 'Antonia', password: '12345', apellido: 'Pacheco', carrera: 'Ingeniería en Informática' },
-        { nombre: 'Paolo', password: '881188', apellido: 'Rossi', carrera: 'Administración de Empresas' },
-        { nombre: 'Juan', password: 'abcde', apellido: 'García', carrera: 'Contabilidad' },
-        { nombre: 'Javier', password: '1234', apellido: 'Martínez', carrera: 'Ingeniería Civil' },
-        { nombre: 'Constanza', password: '1234', apellido: 'López', carrera: 'Derecho' }
+        { nombre: 'Paolo', password: '881188', apellido: 'Vilches', carrera: 'Administración de Empresas' },
+        { nombre: 'Javier', password: '1234', apellido: 'Soto', carrera: 'Agronomía' },
+        { nombre: 'Constanza', password: '1234', apellido: 'Pacheco', carrera: 'Enfemería' }
       ];
       await this._storage.set('usuarios', usuarios);
     }
-
+  
     // Imprimir la lista de usuarios actual en la consola
     const usuarios = await this._storage.get('usuarios');
     console.log('Usuarios actuales:', usuarios);
   }
+  
 
   public async getUserByName(nombre: string) {
     await this.init();
