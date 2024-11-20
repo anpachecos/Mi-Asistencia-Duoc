@@ -10,11 +10,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { GoodbyeAnimationComponent } from './components/goodbye-animation/goodbye-animation.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [AppComponent, GoodbyeAnimationComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, IonicStorageModule.forRoot()], //puse esta wea para que me dejara usar componentes de formulario sin hacer un formulario, asumo que tendré que eliminarlo después para que no me genere problemas. 
+  imports: [BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    ReactiveFormsModule, 
+    IonicStorageModule.forRoot(),
+    HttpClientModule,
+    ],  
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

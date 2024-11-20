@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
-import { StorageService } from '../services/storage.service'; // Importamos nuestro servicio
+import { ApiService } from '../services/api.service'; // Cambiamos al servicio de API
 import { LoadingController } from '@ionic/angular';
-
+import { StorageService } from '../services/storage.service'; // Importamos nuestro servicio
 
 @Component({
   selector: 'app-login',
@@ -14,62 +14,78 @@ export class LoginPage implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
 
-  togglePasswordVisibility() {
-    if (this.passwordType === 'password') {
-      this.passwordType = 'text';
-      this.passwordIcon = 'eye';
-    } else {
-      this.passwordType = 'password';
-      this.passwordIcon = 'eye-off';
-    }
-  }
-  
   formularioLogin: FormGroup;
 
   constructor(
-    public fb: FormBuilder, 
+    public fb: FormBuilder,
     public alertController: AlertController,
     public navCtrl: NavController,
-    private storageService: StorageService, // Inyectamos el servicio de almacenamiento
-    private loadingCtrl: LoadingController
-  ) { 
+    private apiService: ApiService, // Inyectamos ApiService
+    private loadingCtrl: LoadingController,
+    private storageService: StorageService // Inyectamos el servicio para los guards
+  ) {
     this.formularioLogin = this.fb.group({
-      'nombre': new FormControl("", Validators.required),
-      'password': new FormControl("", Validators.required)
+      nombre: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
     });
   }
 
   ngOnInit() {}
 
+  togglePasswordVisibility() {
+    this.passwordType =
+      this.passwordType === 'password' ? 'text' : 'password';
+    this.passwordIcon =
+      this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
   async ingresar() {
     const f = this.formularioLogin.value;
-    const usuarios = await this.storageService.get('usuarios');
-    
-    const usuarioEncontrado = usuarios.find((usuario: any) => usuario.nombre === f.nombre && usuario.password === f.password);
   
-    if (usuarioEncontrado) {
-      console.log('Usuario autenticado correctamente');
-      await this.storageService.set('ingresado', true); // Marcar como autenticado
-      await this.storageService.set('usuarioActivo', usuarioEncontrado.nombre); // Guardar el nombre del usuario activo
-      this.navCtrl.navigateRoot('inicio'); // Redirigir a la página de inicio
-
-      const loading = await this.loadingCtrl.create({
-        message: 'Ingresando...',
-        spinner: 'circular', 
-        duration: 500
-      });
+    const loading = await this.loadingCtrl.create({
+      message: 'Ingresando...',
+      spinner: 'circular',
+    });
+    await loading.present();
   
-      loading.present();
-
-
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Usuario o contraseña incorrectos.',
-        buttons: ['Aceptar']
-      });
-      await alert.present();
-    }
+    // Llamar a la API para obtener usuarios por nombre
+    this.apiService.getUserByName(f.nombre).subscribe(
+      async (usuarios) => {
+        await loading.dismiss();
+  
+        // Filtrar el usuario correcto en la lista retornada
+        const usuarioEncontrado = usuarios.find(
+          (usuario: any) => usuario.nombre === f.nombre && usuario.contrasena === f.password
+        );
+  
+        if (usuarioEncontrado) {
+          console.log('Usuario autenticado correctamente');
+          await this.storageService.set('ingresado', true); // Marcar como autenticado
+          await this.storageService.set('usuarioActivo', usuarioEncontrado.nombre); // Guardar el nombre del usuario activo
+          this.navCtrl.navigateRoot('inicio'); // Navegar al inicio
+          console.log('Sin funca wajajajja');
+        } else {
+          this.mostrarAlerta('Error', 'Usuario o contraseña incorrectos.');
+        }
+      },
+      async (error) => {
+        await loading.dismiss();
+        console.error('Error en el login:', error);
+        this.mostrarAlerta(
+          'Error',
+          'Ocurrió un problema al verificar tus credenciales.'
+        );
+      }
+    );
   }
   
+
+  async mostrarAlerta(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['Aceptar'],
+    });
+    await alert.present();
+  }
 }
