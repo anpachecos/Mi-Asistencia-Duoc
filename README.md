@@ -12,6 +12,8 @@
 - **Manejo de Errores**: Página 404 personalizada para rutas no encontradas.
 - **Guards de Seguridad**: Restricción de acceso a secciones específicas para usuarios no autorizados.
 - **Api de Pokemon**: Fetch a la Api de pokemon para crear imagenes de perfil personalizadas! https://pokeapi.co.
+- **Consumo de Api Rest**: Implementación de api rest que cree con Django para este proyecto, lo puedes encontrar aquí: https://github.com/anpachecos/Backend_Mobile
+- **Refresher y Loading**: Uso de herramientas de Ionic para recargar y esperar en procesos background.
 
 
 ## Próximas Funcionalidades 🔜
