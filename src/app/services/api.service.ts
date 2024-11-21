@@ -11,6 +11,13 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  updatePassword(nombre: string, newPassword: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}usuarios/update-password/`, {
+      nombre,
+      new_password: newPassword,
+    });
+  }
+
   // Obtener todos los usuarios
   getUsuarios(): Observable<any> {
     return this.http.get(`${this.apiUrl}usuarios/`);
