@@ -4,6 +4,8 @@ import { StorageService } from '../services/storage.service'; // Importa el serv
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
 import { GoodbyeAnimationComponent } from '../components/goodbye-animation/goodbye-animation.component';
 import { ModalController, LoadingController } from '@ionic/angular';
+import { ApiService } from '../services/api.service'; // Cambiamos al servicio de API
+
 
 
 
@@ -23,6 +25,7 @@ export class InicioPage implements OnInit {
     public navCtrl: NavController,
     private storageService: StorageService, // Inyectar el servicio de almacenamiento
     private alertController: AlertController,
+    private apiService: ApiService, // Inyectamos ApiService
     private modalController: ModalController,
     private loadingController: LoadingController
   ) {
@@ -93,43 +96,74 @@ export class InicioPage implements OnInit {
 
   async scan(): Promise<void> {
     try {
+      // Obtener el ID del usuario logueado desde el StorageService
+      const idUsuario = await this.storageService.get('idUsuario');
+      if (!idUsuario) {
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo obtener el ID del usuario. Por favor, inicie sesión nuevamente.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        return;
+      }
+  
       const result = await CapacitorBarcodeScanner.scanBarcode({
-        hint: CapacitorBarcodeScannerTypeHint.ALL
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
       });
   
-      this.result = result.ScanResult;
-      const now = new Date();
-      const formattedDateTime = now.toLocaleString();
+      const qrData = result.ScanResult; // Texto obtenido del QR
+      const [nombre, seccion, sala, fecha] = qrData.split('|'); // Divide los datos
   
-      await this.showAlert(this.result, formattedDateTime);
+      // Construye el objeto de asistencia
+      const asistencia = {
+        usuario: idUsuario, // Usa el ID del usuario logueado
+        nombre,
+        seccion,
+        sala,
+        fecha,
+        estado: 'asistió', // Estado predeterminado
+      };
+  
+      // Llama al servicio para registrar la asistencia
+      this.apiService.addAsistencia(asistencia).subscribe(
+        async (response) => {
+          console.log('Asistencia registrada:', response);
+  
+          // Mostrar pop-up directamente aquí
+          const alert = await this.alertController.create({
+            header: 'Asistencia Registrada',
+            message: `
+              Asignatura: ${nombre}
+              Sección: ${seccion}
+              Sala: ${sala}
+              Fecha: ${fecha}
+            `,
+            buttons: ['OK'],
+          });
+          await alert.present();
+        },
+        async (error) => {
+          console.error('Error al registrar asistencia:', error);
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'No se pudo registrar la asistencia.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+        }
+      );
     } catch (error) {
       console.error('Error al escanear:', error);
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'No se pudo escanear el QR.',
+        buttons: ['OK'],
+      });
+      await alert.present();
     }
   }
-
-  async showAlert(message: string, dateTime: string) {
-    let formattedMessage;
   
-    try {
-      // Intentar formatear como JSON
-      const jsonContent = JSON.parse(message);
-      formattedMessage = `
-        Asignatura: ${jsonContent.asignatura}
-        Sección:  ${jsonContent.sección}
-        Sala:  ${jsonContent.sala}
-      `;
-    } catch {
-      // Si no es JSON, mostrar como texto normal
-      formattedMessage = `Contenido: ${message}`;
-    }
-  
-    const alert = await this.alertController.create({
-      header: 'Asistencia Registrada',
-      message: `${formattedMessage}Escaneado el: ${dateTime}`,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
   
   
 }
