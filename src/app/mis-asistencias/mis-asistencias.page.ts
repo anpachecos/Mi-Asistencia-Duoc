@@ -1,48 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-mis-asistencias',
   templateUrl: './mis-asistencias.page.html',
   styleUrls: ['./mis-asistencias.page.scss'],
 })
-export class MisAsistenciasPage {
-
-  // Array con asistencias
-  asistencias = [
-    {
-      titulo: 'ÉTICA PARA EL TRABAJO',
-      fecha: '2024-09-03',
-      ubicacion: 'SALA SJ-706',
-      descripcion: 'Sección EAY4470'
-    },
-    {
-      titulo: 'PROGRAMACIÓN DE APLICACIONES MÓVILES',
-      fecha: '2024-09-05',
-      ubicacion: 'SALA SJ-L7',
-      descripcion: 'Sección PGY4121'
-    },
-    {
-      titulo: 'ESTADÍSTICA DESCRIPTIVA',
-      fecha: '2024-09-07',
-      ubicacion: 'SALA SJ-L4',
-      descripcion: 'Sección MAT4140'
-    },
-    {
-      titulo: 'ESTADÍSTICA DESCRIPTIVA',
-      fecha: '2024-09-09',
-      ubicacion: 'SALA SJ-L4',
-      descripcion: 'Sección MAT4140'
-    }
-  ];
-
+export class MisAsistenciasPage implements OnInit {
+  asistencias: any[] = []; // Asistencias obtenidas desde la API
+  filteredAsistencias: any[] = []; // Asistencias filtradas
   searchQuery: string = ''; // Término de búsqueda
-  filteredAsistencias = [...this.asistencias]; // Array para las asistencias filtradas
 
-  constructor() { }
+  constructor(private apiService: ApiService, private storageService: StorageService) {}
+
+  async ngOnInit() {
+    // Obtener el ID del usuario desde StorageService
+    const usuarioId = await this.storageService.get('idUsuario');
+    if (usuarioId) {
+      this.loadAsistencias(usuarioId);
+    } else {
+      console.error('No se pudo obtener el ID del usuario. Asegúrate de estar logueado.');
+    }
+  }
+
+  loadAsistencias(usuarioId: number) {
+    this.apiService.getAsistencias(usuarioId).subscribe(
+      (data) => {
+        this.asistencias = data; // Guardar asistencias
+        this.filteredAsistencias = [...this.asistencias]; // Inicializar filtrado
+      },
+      (error) => {
+        console.error('Error al cargar asistencias:', error);
+      }
+    );
+  }
 
   filterAsistencias() {
     const query = this.searchQuery.toLowerCase();
-    this.filteredAsistencias = this.asistencias.filter(asistencia => 
+    this.filteredAsistencias = this.asistencias.filter((asistencia) => 
       asistencia.titulo.toLowerCase().includes(query) ||
       asistencia.fecha.toLowerCase().includes(query) ||
       asistencia.ubicacion.toLowerCase().includes(query) ||
