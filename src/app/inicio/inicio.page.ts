@@ -96,6 +96,13 @@ export class InicioPage implements OnInit {
 
   async scan(): Promise<void> {
     try {
+      // Obtener el ID del usuario logueado desde el StorageService
+      const idUsuario = await this.storageService.get('idUsuario');
+      if (!idUsuario) {
+        await this.showAlert('Error', 'No se pudo obtener el ID del usuario. Por favor, inicie sesión nuevamente.');
+        return;
+      }
+  
       const result = await CapacitorBarcodeScanner.scanBarcode({
         hint: CapacitorBarcodeScannerTypeHint.ALL,
       });
@@ -105,7 +112,7 @@ export class InicioPage implements OnInit {
   
       // Construye el objeto de asistencia
       const asistencia = {
-        usuario: 1, // Cambiar por el ID del usuario autenticado (puedes obtenerlo del almacenamiento local o de la sesión)
+        usuario: idUsuario, // Usa el ID del usuario logueado
         nombre,
         seccion,
         sala,
@@ -129,6 +136,7 @@ export class InicioPage implements OnInit {
       await this.showAlert('Error', 'No se pudo escanear el QR.');
     }
   }
+  
   
   async showAlert(message: string, dateTime: string) {
     let formattedMessage;

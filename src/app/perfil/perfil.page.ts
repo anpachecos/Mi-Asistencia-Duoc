@@ -15,7 +15,7 @@ export class PerfilPage implements OnInit {
 
   async ngOnInit() {
     this.getRandomPokemonImage();
-    await this.cargarDatosUsuario(); // Cargar el nombre del usuario logueado
+    //await this.cargarDatosUsuario(); // Cargar el nombre del usuario logueado
   }
 
   // Método para obtener una imagen de Pokémon aleatoria
@@ -31,13 +31,13 @@ export class PerfilPage implements OnInit {
   }
 
   // Método para cargar el nombre del usuario logueado
-  async cargarDatosUsuario() {
+  /**async cargarDatosUsuario() {
     await this.storageService.init(); // Asegura que el storage esté inicializado
     this.nombreUsuario = await this.storageService.get('usuarioActivo') || ''; // Obtener el nombre del usuario logueado
   
     if (this.nombreUsuario) {
       this.userData = await this.storageService.getUserByName(this.nombreUsuario); // Obtener los datos completos del usuario
     }
-  }
+  }**/
   
 }
