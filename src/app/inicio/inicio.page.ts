@@ -99,7 +99,12 @@ export class InicioPage implements OnInit {
       // Obtener el ID del usuario logueado desde el StorageService
       const idUsuario = await this.storageService.get('idUsuario');
       if (!idUsuario) {
-        await this.showAlert('Error', 'No se pudo obtener el ID del usuario. Por favor, inicie sesión nuevamente.');
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo obtener el ID del usuario. Por favor, inicie sesión nuevamente.',
+          buttons: ['OK'],
+        });
+        await alert.present();
         return;
       }
   
@@ -124,43 +129,41 @@ export class InicioPage implements OnInit {
       this.apiService.addAsistencia(asistencia).subscribe(
         async (response) => {
           console.log('Asistencia registrada:', response);
-          await this.showAlert('Asistencia registrada', `Fecha: ${fecha}`);
+  
+          // Mostrar pop-up directamente aquí
+          const alert = await this.alertController.create({
+            header: 'Asistencia Registrada',
+            message: `
+              Asignatura: ${nombre}
+              Sección: ${seccion}
+              Sala: ${sala}
+              Fecha: ${fecha}
+            `,
+            buttons: ['OK'],
+          });
+          await alert.present();
         },
         async (error) => {
           console.error('Error al registrar asistencia:', error);
-          await this.showAlert('Error', 'No se pudo registrar la asistencia.');
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'No se pudo registrar la asistencia.',
+            buttons: ['OK'],
+          });
+          await alert.present();
         }
       );
     } catch (error) {
       console.error('Error al escanear:', error);
-      await this.showAlert('Error', 'No se pudo escanear el QR.');
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'No se pudo escanear el QR.',
+        buttons: ['OK'],
+      });
+      await alert.present();
     }
   }
   
-  
-  async showAlert(message: string, dateTime: string) {
-    let formattedMessage;
-  
-    try {
-      // Intentar formatear como JSON
-      const jsonContent = JSON.parse(message);
-      formattedMessage = `
-        Asignatura: ${jsonContent.asignatura}
-        Sección:  ${jsonContent.sección}
-        Sala:  ${jsonContent.sala}
-      `;
-    } catch {
-      // Si no es JSON, mostrar como texto normal
-      formattedMessage = `Contenido: ${message}`;
-    }
-  
-    const alert = await this.alertController.create({
-      header: 'Asistencia Registrada',
-      message: `${formattedMessage}Escaneado el: ${dateTime}`,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
   
   
 }
