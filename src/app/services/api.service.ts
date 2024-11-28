@@ -37,4 +37,9 @@ export class ApiService {
   deleteUsuario(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}usuarios/${id}/`);
   }
+
+  addAsistencia(asistencia: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}asistencias/`, asistencia);
+  }
+  
 }

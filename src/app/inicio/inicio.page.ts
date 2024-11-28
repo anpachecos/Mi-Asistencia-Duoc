@@ -4,6 +4,8 @@ import { StorageService } from '../services/storage.service'; // Importa el serv
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
 import { GoodbyeAnimationComponent } from '../components/goodbye-animation/goodbye-animation.component';
 import { ModalController, LoadingController } from '@ionic/angular';
+import { ApiService } from '../services/api.service'; // Cambiamos al servicio de API
+
 
 
 
@@ -23,6 +25,7 @@ export class InicioPage implements OnInit {
     public navCtrl: NavController,
     private storageService: StorageService, // Inyectar el servicio de almacenamiento
     private alertController: AlertController,
+    private apiService: ApiService, // Inyectamos ApiService
     private modalController: ModalController,
     private loadingController: LoadingController
   ) {
@@ -94,19 +97,39 @@ export class InicioPage implements OnInit {
   async scan(): Promise<void> {
     try {
       const result = await CapacitorBarcodeScanner.scanBarcode({
-        hint: CapacitorBarcodeScannerTypeHint.ALL
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
       });
   
-      this.result = result.ScanResult;
-      const now = new Date();
-      const formattedDateTime = now.toLocaleString();
+      const qrData = result.ScanResult; // Texto obtenido del QR
+      const [nombre, seccion, sala, fecha] = qrData.split('|'); // Divide los datos
   
-      await this.showAlert(this.result, formattedDateTime);
+      // Construye el objeto de asistencia
+      const asistencia = {
+        usuario: 1, // Cambiar por el ID del usuario autenticado (puedes obtenerlo del almacenamiento local o de la sesión)
+        nombre,
+        seccion,
+        sala,
+        fecha,
+        estado: 'asistió', // Estado predeterminado
+      };
+  
+      // Llama al servicio para registrar la asistencia
+      this.apiService.addAsistencia(asistencia).subscribe(
+        async (response) => {
+          console.log('Asistencia registrada:', response);
+          await this.showAlert('Asistencia registrada', `Fecha: ${fecha}`);
+        },
+        async (error) => {
+          console.error('Error al registrar asistencia:', error);
+          await this.showAlert('Error', 'No se pudo registrar la asistencia.');
+        }
+      );
     } catch (error) {
       console.error('Error al escanear:', error);
+      await this.showAlert('Error', 'No se pudo escanear el QR.');
     }
   }
-
+  
   async showAlert(message: string, dateTime: string) {
     let formattedMessage;
   
