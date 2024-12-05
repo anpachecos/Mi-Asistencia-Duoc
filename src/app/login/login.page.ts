@@ -41,47 +41,24 @@ export class LoginPage implements OnInit {
 
   async ingresar() {
     const f = this.formularioLogin.value;
-
-    const loading = await this.loadingCtrl.create({
-      message: 'Ingresando...',
-      spinner: 'circular',
-    });
-    await loading.present();
-
-    // Llamar a la API para obtener usuarios por nombre
-    this.apiService.getUserByName(f.nombre).subscribe(
-      async (usuarios) => {
-        await loading.dismiss();
-
-        // Filtrar el usuario correcto en la lista retornada
-        const usuarioEncontrado = usuarios.find(
-          (usuario: any) => usuario.nombre === f.nombre && usuario.contrasena === f.password
-        );
-
-        if (usuarioEncontrado) {
-          console.log('Usuario autenticado correctamente');
-
-          // Guardar los datos necesarios en StorageService
-          await this.storageService.set('ingresado', true); // Marcar como autenticado
-          await this.storageService.set('usuarioActivo', usuarioEncontrado.nombre); // Guardar el nombre del usuario activo
-          await this.storageService.set('idUsuario', usuarioEncontrado.id); // Guardar el ID del usuario
-
-          this.navCtrl.navigateRoot('inicio'); // Navegar al inicio
-        } else {
-          this.mostrarAlerta('Error', 'Usuario o contraseña incorrectos.');
-        }
-      },
-      async (error) => {
-        await loading.dismiss();
-        console.error('Error en el login:', error);
-        this.mostrarAlerta(
-          'Error',
-          'Ocurrió un problema al verificar tus credenciales.'
-        );
-      }
-    );
+  
+    // Validar credenciales predeterminadas (admin/admin) primero
+    if (f.nombre === 'admin' && f.password === 'admin') {
+      console.log('Autenticado como usuario predeterminado (admin)');
+  
+      // Guardar los datos necesarios en StorageService
+      await this.storageService.set('ingresado', true); // Marcar como autenticado
+      await this.storageService.set('usuarioActivo', 'admin'); // Guardar el nombre del usuario predeterminado
+      await this.storageService.set('idUsuario', '0'); // Guardar un ID ficticio para el usuario admin
+  
+      this.navCtrl.navigateRoot('inicio'); // Navegar al inicio
+      return; // Termina aquí si las credenciales son admin/admin
+    }
+  
+    // Mostrar un mensaje temporal si no son admin/admin
+    this.mostrarAlerta('Error', 'Usuario o contraseña incorrectos.');
   }
-
+  
   async mostrarAlerta(header: string, message: string) {
     const alert = await this.alertController.create({
       header,

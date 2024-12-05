@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController} from '@ionic/angular';
 import { StorageService } from '../services/storage.service'; // Importa el servicio de almacenamiento
-import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { GoodbyeAnimationComponent } from '../components/goodbye-animation/goodbye-animation.component';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { ApiService } from '../services/api.service'; // Cambiamos al servicio de API
+import { CustomScanResult } from '../interfaces/scan-result.interface';
 
 
 
@@ -108,73 +109,86 @@ export class InicioPage implements OnInit {
         return;
       }
   
-      const result = await CapacitorBarcodeScanner.scanBarcode({
-        hint: CapacitorBarcodeScannerTypeHint.ALL,
-      });
+      // Iniciar el escaneo
+      const result = (await BarcodeScanner.scan()) as unknown as CustomScanResult;
+        
+      // Verificar si el resultado contiene datos
+      if (result?.hasOwnProperty('content') && result['content']) {
+        const qrData = result['content']; // Accede al contenido directamente
+        console.log('Código escaneado:', qrData);
   
-      const qrData = result.ScanResult; // Texto obtenido del QR
-      const [nombre, seccion, sala, fecha] = qrData.split('|'); // Divide los datos
+        // Procesar los datos del QR
+        const [nombre, seccion, sala, fecha] = qrData.split('|'); // Divide los datos según el formato esperado
   
-      // Construye el objeto de asistencia
-      const asistencia = {
-        usuario: idUsuario, // Usa el ID del usuario logueado
-        nombre,
-        seccion,
-        sala,
-        fecha,
-        estado: 'asistió', // Estado predeterminado
-      };
+        // Construye el objeto de asistencia
+        const asistencia = {
+          usuario: idUsuario, // Usa el ID del usuario logueado
+          nombre,
+          seccion,
+          sala,
+          fecha,
+          estado: 'asistió', // Estado predeterminado
+        };
   
-      // Llama al servicio para registrar la asistencia
-      this.apiService.addAsistencia(asistencia).subscribe(
-        async (response) => {
-          console.log('Asistencia registrada:', response);
+        // Llama al servicio para registrar la asistencia
+        this.apiService.addAsistencia(asistencia).subscribe(
+          async (response) => {
+            console.log('Asistencia registrada:', response);
   
-          // Mostrar pop-up directamente aquí
-          const alert = await this.alertController.create({
-            header: 'Asistencia Registrada',
-            message: `
-              Asignatura: ${nombre}<br>
-              Sección: ${seccion}<br>
-              Sala: ${sala}<br>
-              Fecha: ${fecha}
-            `,
-            buttons: ['OK'],
-          });
-          await alert.present();
-        },
-        async (error) => {
-          console.error('Error al registrar asistencia:', error);
+            // Mostrar pop-up directamente aquí
+            const alert = await this.alertController.create({
+              header: 'Asistencia Registrada',
+              message: `
+                Asignatura: ${nombre}<br>
+                Sección: ${seccion}<br>
+                Sala: ${sala}<br>
+                Fecha: ${fecha}
+              `,
+              buttons: ['OK'],
+            });
+            await alert.present();
+          },
+          async (error) => {
+            console.error('Error al registrar asistencia:', error);
   
-          // Manejar el caso de asistencia duplicada
-          let errorMessage = 'No se pudo registrar la asistencia.';
-          if (error.status === 400 && error.error?.error?.includes('Ya registraste asistencia')) {
-            errorMessage = `Ya registraste asistencia para:<br>
-              Asignatura: ${nombre}<br>
-              Sección: ${seccion}<br>
-              Sala: ${sala}<br>
-              Fecha: ${fecha}`;
+            // Manejar el caso de asistencia duplicada
+            let errorMessage = 'No se pudo registrar la asistencia.';
+            if (error.status === 400 && error.error?.error?.includes('Ya registraste asistencia')) {
+              errorMessage = `Ya registraste asistencia para:<br>
+                Asignatura: ${nombre}<br>
+                Sección: ${seccion}<br>
+                Sala: ${sala}<br>
+                Fecha: ${fecha}`;
+            }
+  
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: errorMessage,
+              buttons: ['OK'],
+            });
+            await alert.present();
           }
-  
-          const alert = await this.alertController.create({
-            header: 'Error',
-            message: errorMessage,
-            buttons: ['OK'],
-          });
-          await alert.present();
-        }
-      );
+        );
+      } else {
+        console.log('No se detectó ningún código.');
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se detectó ningún código QR. Inténtalo nuevamente.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
     } catch (error) {
       console.error('Error al escanear:', error);
       const alert = await this.alertController.create({
         header: 'Error',
-        message: 'No se pudo escanear el QR.',
+        message: 'No se pudo escanear el QR. Por favor, inténtalo nuevamente.',
         buttons: ['OK'],
       });
       await alert.present();
     }
-  }   
-  
+  }
+   
   
   
 }
