@@ -134,9 +134,9 @@ export class InicioPage implements OnInit {
           const alert = await this.alertController.create({
             header: 'Asistencia Registrada',
             message: `
-              Asignatura: ${nombre}
-              Sección: ${seccion}
-              Sala: ${sala}
+              Asignatura: ${nombre}<br>
+              Sección: ${seccion}<br>
+              Sala: ${sala}<br>
               Fecha: ${fecha}
             `,
             buttons: ['OK'],
@@ -145,9 +145,20 @@ export class InicioPage implements OnInit {
         },
         async (error) => {
           console.error('Error al registrar asistencia:', error);
+  
+          // Manejar el caso de asistencia duplicada
+          let errorMessage = 'No se pudo registrar la asistencia.';
+          if (error.status === 400 && error.error?.error?.includes('Ya registraste asistencia')) {
+            errorMessage = `Ya registraste asistencia para:<br>
+              Asignatura: ${nombre}<br>
+              Sección: ${seccion}<br>
+              Sala: ${sala}<br>
+              Fecha: ${fecha}`;
+          }
+  
           const alert = await this.alertController.create({
             header: 'Error',
-            message: 'No se pudo registrar la asistencia.',
+            message: errorMessage,
             buttons: ['OK'],
           });
           await alert.present();
@@ -162,7 +173,7 @@ export class InicioPage implements OnInit {
       });
       await alert.present();
     }
-  }
+  }   
   
   
   
