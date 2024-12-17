@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
-import { ApiService } from '../services/api.service'; // Importar el servicio de API
+import { StorageService } from '../services/storage.service'; // Importar el servicio de almacenamiento
 
 @Component({
   selector: 'app-registro',
@@ -14,40 +14,34 @@ export class RegistroPage implements OnInit {
   passwordIcon: string = 'eye-off';
   confirmPasswordIcon: string = 'eye-off';
 
-  formularioRecuperar: FormGroup;
-
-  constructor(
-    public fb: FormBuilder,
-    public alertController: AlertController,
-    public navCtrl: NavController,
-    private apiService: ApiService // Inyectar el servicio de API
-  ) {
-    this.formularioRecuperar = this.fb.group(
-      {
-        nombre: new FormControl('', Validators.required),
-        password: new FormControl('', [
-          Validators.required,
-          Validators.minLength(6),
-        ]),
-        confirmacionPassword: new FormControl('', Validators.required),
-      },
-      { validator: this.passwordMatchValidator } // Agregar validador personalizado
-    );
-  }
-
-  ngOnInit() {}
-
   togglePasswordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
   toggleConfirmPasswordVisibility() {
-    this.confirmPasswordType =
-      this.confirmPasswordType === 'password' ? 'text' : 'password';
-    this.confirmPasswordIcon =
-      this.confirmPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
+    this.confirmPasswordType = this.confirmPasswordType === 'password' ? 'text' : 'password';
+    this.confirmPasswordIcon = this.confirmPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
+
+  formularioRecuperar: FormGroup;
+
+  constructor(
+    public fb: FormBuilder, 
+    public alertController: AlertController,
+    public navCtrl: NavController,
+    private storageService: StorageService // Inyectar el servicio de almacenamiento
+  ) { 
+    
+    // Agrega la validación de coincidencia de contraseñas al FormGroup
+    this.formularioRecuperar = this.fb.group({
+      'nombre': new FormControl("", Validators.required),
+      'password': new FormControl("", Validators.required),
+      'confirmacionPassword': new FormControl("", Validators.required),
+    }, { validator: this.passwordMatchValidator });  // Aquí se agrega el validador personalizado
+  }
+
+  ngOnInit() {}
 
   // Validador personalizado para verificar que las contraseñas coincidan
   passwordMatchValidator(formGroup: FormGroup) {
@@ -60,40 +54,47 @@ export class RegistroPage implements OnInit {
   async recuperar() {
     const f = this.formularioRecuperar.value;
 
-    // Verifica si el formulario es inválido
+    // Verifica si el formulario es inválido o si las contraseñas no coinciden
     if (this.formularioRecuperar.invalid) {
       const alert = await this.alertController.create({
         header: '¡Error!',
-        message:
-          'Por favor, asegúrate de que las contraseñas coincidan y que todos los campos estén completos.',
-        buttons: ['Aceptar'],
+        message: 'Por favor, asegúrate de que las contraseñas coincidan y que todos los campos estén completos.',
+        buttons: ['Aceptar']
       });
       await alert.present();
       return;
     }
 
-    // Llama a la API para actualizar la contraseña
-    this.apiService.updatePassword(f.nombre, f.password).subscribe(
-      async (response) => {
-        const alert = await this.alertController.create({
-          header: '¡Éxito!',
-          message: 'Tu contraseña ha sido actualizada correctamente.',
-          buttons: ['Aceptar'],
-        });
-        await alert.present();
+    // Obtener la lista de usuarios desde Ionic Storage
+    const usuarios = await this.storageService.get('usuarios') || [];
 
-        this.navCtrl.navigateRoot('login');
-      },
-      async (error) => {
-        const errorMessage =
-          error.error?.error || 'Ocurrió un problema al actualizar la contraseña.';
-        const alert = await this.alertController.create({
-          header: '¡Error!',
-          message: errorMessage,
-          buttons: ['Aceptar'],
-        });
-        await alert.present();
-      }
-    );
+    // Encontrar el usuario en la lista
+    const usuario = usuarios.find((u: any) => u.nombre === f.nombre);
+
+    // Verificar si el nombre de usuario existe
+    if (usuario) {
+      // Actualizar la contraseña del usuario
+      usuario.password = f.password;
+
+      // Actualizar la lista de usuarios en Ionic Storage
+      await this.storageService.set('usuarios', usuarios);
+
+      const alert = await this.alertController.create({
+        header: '¡Contraseña Restablecida!',
+        message: 'Tu contraseña ha sido actualizada correctamente.',
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+
+      this.navCtrl.navigateRoot('login');
+    } else {
+      const alert = await this.alertController.create({
+        header: '¡Error!',
+        message: 'El nombre de usuario no existe.',
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+    }
   }
+
 }
